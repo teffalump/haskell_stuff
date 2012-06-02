@@ -4,10 +4,13 @@ module NumTheory (
         fibs,
         isPrime,
         mOrd,
-        primeFactor,
+        primeFactors,
         factors) 
 
 where 
+
+import Data.List
+import Data.Char
 
 --List minus for ordered increasing lists; [1..4] `minus` [2,3] ==> [1,4]
 minus :: Ord a => [a] -> [a] -> [a]
@@ -18,14 +21,14 @@ minus (x:xs) (y:ys) = case (compare x y) of
 minus xs _ = xs
 
 --prime sieve
-sieveTo :: Int -> [Int]
+sieveTo :: Integer -> [Integer]
 sieveTo m = 2: sieve [3,5..m]
     where
         sieve [] = []
         sieve (x:xs) = x : sieve (xs `minus` [x*x,x*x+2*x..m])
 
 -- very fast fib
-fibs :: [Int] 
+fibs :: [Integer] 
 fibs = 0 : scanl (+) 1 fibs
 
 -- check if prime -- WIP
@@ -35,7 +38,7 @@ isPrime x = if null [ y | y <- [2..floor (sqrt (fromIntegral x))], mod x y == 0]
                     else False
 
 -- prime factors of a number
-p_factor :: [Int] -> Int -> [Int]
+p_factor :: [Integer] -> Integer -> [Integer]
 p_factor _ 1 = []
 p_factor [] y = [y]
 p_factor all@(x:xs) y = if y `mod` x == 0
@@ -44,12 +47,14 @@ p_factor all@(x:xs) y = if y `mod` x == 0
                     else
                         p_factor (xs) y
 
-primeFactor y = p_factor . sieveTo . floor . sqrt . fromIntegral
+primeFactors y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y)) y
 
 -- factors of x
-factors :: Int -> [Int]
-factors =  nub . map (product) . init . subsequences . p_factors'
+factors :: Integer -> [Integer]
+factors =  nub . map (product) . init . subsequences . primeFactors
 
 -- multiplicative order
-mOrd :: Integer -> Integer
-mOrd p = head . filter (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+mOrd :: Integer -> Maybe Integer
+mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+
+                        
