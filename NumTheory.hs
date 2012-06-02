@@ -1,6 +1,5 @@
 -- A list of really useful number theory-like functions
-module Utils (
-        minus,
+module NumTheory (
         sieveTo,
         fibs,
         isPrime,
@@ -9,6 +8,7 @@ module Utils (
         factors) 
 
 where 
+
 --List minus for ordered increasing lists; [1..4] `minus` [2,3] ==> [1,4]
 minus :: Ord a => [a] -> [a] -> [a]
 minus (x:xs) (y:ys) = case (compare x y) of 
