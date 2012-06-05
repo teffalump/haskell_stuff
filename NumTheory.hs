@@ -33,7 +33,7 @@ fibs = 0 : scanl (+) 1 fibs
 
 -- check if prime -- WIP
 isPrime :: Integral a => a -> Bool
-isPrime x = if null [ y | y <- [2..floor (sqrt (fromIntegral x))], mod x y == 0]
+isPrime x = if x > 0 && null [ y | y <- [2..floor (sqrt (fromIntegral x))], mod x y == 0]
                     then True
                     else False
 
@@ -53,8 +53,10 @@ primeFactors y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y)
 factors :: Integer -> [Integer]
 factors =  nub . map (product) . init . subsequences . primeFactors
 
--- multiplicative order
+-- multiplicative order of 10 mod x
 mOrd :: Integer -> Maybe Integer
-mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+mOrd p = if (p `mod` 2 /= 0) && (p `mod` 5 /= 0)
+            then find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+            else Nothing
 
                         
