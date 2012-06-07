@@ -55,8 +55,4 @@ factors =  nub . map (product) . init . subsequences . primeFactors
 
 -- multiplicative order of 10 mod x
 mOrd :: Integer -> Maybe Integer
-mOrd p = if (p `mod` 2 /= 0) && (p `mod` 5 /= 0)
-            then find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
-            else Nothing
-
-                        
+mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
