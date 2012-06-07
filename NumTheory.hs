@@ -33,7 +33,7 @@ fibs = 0 : scanl (+) 1 fibs
 
 -- check if prime -- WIP
 isPrime :: Integral a => a -> Bool
-isPrime x = if (x > 0) && (all (\y -> (x `mod` y) == 0) [2..floor (sqrt (fromIntegral x))])
+isPrime x = if (x > 0) && not (any (\y -> (x `mod` y) == 0) [2..floor (sqrt (fromIntegral x))])
                 then True
                 else False
 
