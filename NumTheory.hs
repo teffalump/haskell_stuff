@@ -5,6 +5,7 @@ module NumTheory (
         isPrime,
         mOrd,
         primeFactors,
+        primeFactors',
         factors) 
 
 where 
@@ -47,7 +48,17 @@ p_factor (x:xs) y = if y `mod` x == 0
                     else
                         p_factor (xs) y
 
-primeFactors y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y)) y
+primeFactors' y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y)) y
+
+-- other way to get primeFactors and primes
+primes = 2 : filter ((==1) . length . primeFactors) [3,5..]
+ 
+primeFactors n = factor n primes
+  where
+    factor n (p:ps) 
+        | p*p > n        = [n]
+        | n `mod` p == 0 = p : factor (n `div` p) (p:ps)
+        | otherwise      = factor n ps
 
 -- factors of x
 factors :: Integer -> [Integer]
