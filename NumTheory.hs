@@ -41,9 +41,9 @@ isPrime x = if (x > 0) && not (any (\y -> (x `mod` y) == 0) [2..floor (sqrt (fro
 p_factor :: [Integer] -> Integer -> [Integer]
 p_factor _ 1 = []
 p_factor [] y = [y]
-p_factor all@(x:xs) y = if y `mod` x == 0
+p_factor (x:xs) y = if y `mod` x == 0
                     then
-                        x:(p_factor all (y `div` x))
+                        x:(p_factor (x:xs) (y `div` x))
                     else
                         p_factor (xs) y
 
