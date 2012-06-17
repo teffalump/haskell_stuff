@@ -7,7 +7,8 @@ module NumTheory (
         primeFactors,
         primeFactors',
         factors,
-        primes) 
+        primes,
+        toBin) 
 
 where 
 
@@ -68,3 +69,23 @@ factors =  nub . map (product) . init . subsequences . primeFactors
 -- multiplicative order of 10 mod x
 mOrd :: Integer -> Maybe Integer
 mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+
+-- Binary conversion stuff
+power :: Integer -> Integer -> Integer
+power x y = x^y
+
+--places needed
+maxPlace p = head $ dropWhile (\x -> (<p) $ power 2 x) [0..]
+places p = reverse [0..maxPlace p]
+
+-- recursion, use foldl? Seems better but failed when tried
+test' :: Integer -> String -> [Integer] -> Integer
+test' i b [] = read b :: Integer
+test' i b (x:xs) = if m <= i
+                    then test' (i - m) (b ++ "1") (xs) 
+                    else test' i (b ++ "0") (xs)
+                        where m = 2 `power` x
+
+--convert to binary from decimal
+toBin :: Integer -> Integer
+toBin p = test' p "0" (places p)
