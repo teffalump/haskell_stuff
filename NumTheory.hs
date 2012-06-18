@@ -8,7 +8,8 @@ module NumTheory (
         primeFactors',
         factors,
         primes,
-        toBin) 
+        toBin,
+        power) 
 
 where 
 
@@ -35,10 +36,8 @@ fibs :: [Integer]
 fibs = 0 : scanl (+) 1 fibs
 
 -- check if prime -- WIP
-isPrime :: Integral a => a -> Bool
-isPrime x = if (x > 1) && not (any (\y -> (x `mod` y) == 0) [2..floor (sqrt (fromIntegral x))])
-                then True
-                else False
+isPrime :: Integer -> Bool
+isPrime x = all ((/=0) . mod x) . sieveTo . floor . sqrt . fromIntegral $ x
 
 -- prime factors of a number
 p_factor :: [Integer] -> Integer -> [Integer]
@@ -78,13 +77,21 @@ power x y = x^y
 places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
 
 -- recursion, use foldl? Seems better but failed when tried
-test' :: Integer -> String -> [Integer] -> Integer
-test' i b [] = read b :: Integer
-test' i b (x:xs) = if m <= i
-                    then test' (i - m) (b ++ "1") (xs) 
-                    else test' i (b ++ "0") (xs)
-                        where m = 2 `power` x
+{-test' :: Integer -> String -> [Integer] -> Integer-}
+{-test' i b [] = read b :: Integer-}
+{-test' i b (x:xs) = if m <= i-}
+                    {-then test' (i - m) (b ++ "1") (xs) -}
+                    {-else test' i (b ++ "0") (xs)-}
+                        {-where m = 2 `power` x-}
+
+{-toBin' :: Integer -> Integer-}
+{-toBin' p = test' p "0" (places p)-}
 
 --convert to binary from decimal
+-- foldl use
 toBin :: Integer -> Integer
-toBin p = test' p "0" (places p)
+toBin n = read (snd . foldl (\(rem,dig) x -> if 2 `power` x <= rem
+                            then (rem - 2 `power` x, dig ++ "1")
+                            else (rem,dig ++ "0")) (n, "0")
+                            . places $ n) :: Integer
+
