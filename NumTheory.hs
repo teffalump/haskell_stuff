@@ -54,12 +54,12 @@ primeFactors' y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y
 -- other way to get primeFactors and primes
 primes = 2 : filter ((==1) . length . primeFactors) [3,5..]
  
-primeFactors n = factor n primes
+primeFactors = factor primes
   where
-    factor n (p:ps) 
+    factor (p:ps) n
         | p*p > n        = [n]
-        | n `mod` p == 0 = p : factor (n `div` p) (p:ps)
-        | otherwise      = factor n ps
+        | n `mod` p == 0 = p : factor (p:ps) (n `div` p)
+        | otherwise      = factor ps n
 
 -- factors of x
 factors :: Integer -> [Integer]
