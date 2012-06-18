@@ -75,8 +75,7 @@ power :: Integer -> Integer -> Integer
 power x y = x^y
 
 --places needed
-maxPlace p = head $ dropWhile (\x -> (<p) $ power 2 x) [0..]
-places = reverse . enumFromTo 0 . maxPlace
+places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
 
 -- recursion, use foldl? Seems better but failed when tried
 test' :: Integer -> String -> [Integer] -> Integer
