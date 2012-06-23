@@ -39,9 +39,9 @@ fibs = 0 : scanl (+) 1 fibs
 -- check if prime -- WIP
 isPrime :: Integer -> Bool
 isPrime x
-    | 0 = False
-    | 1 = False
-    | 2 = True
+    | x == 0 = False
+    | x == 1 = False
+    | x == 2 = True
     | otherwise = all ((/=0) . mod x) . sieveTo . floor . sqrt . fromIntegral $ x
 
 -- prime factors of a number
