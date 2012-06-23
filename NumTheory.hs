@@ -9,7 +9,8 @@ module NumTheory (
         factors,
         primes,
         toBin,
-        power) 
+        power,
+        fact) 
 
 where 
 
@@ -37,7 +38,11 @@ fibs = 0 : scanl (+) 1 fibs
 
 -- check if prime -- WIP
 isPrime :: Integer -> Bool
-isPrime x = all ((/=0) . mod x) . sieveTo . floor . sqrt . fromIntegral $ x
+isPrime x
+    | 0 = False
+    | 1 = False
+    | 2 = True
+    | otherwise = all ((/=0) . mod x) . sieveTo . floor . sqrt . fromIntegral $ x
 
 -- prime factors of a number
 p_factor :: [Integer] -> Integer -> [Integer]
@@ -49,7 +54,7 @@ p_factor (x:xs) y = if y `mod` x == 0
                     else
                         p_factor (xs) y
 
-primeFactors' y = p_factor (sieveTo (toInteger . floor . sqrt . fromIntegral $ y)) y
+primeFactors' y = p_factor (sieveTo . toInteger . floor . sqrt . fromIntegral $ y) y
 
 -- other way to get primeFactors and primes
 primes = 2 : filter ((==1) . length . primeFactors) [3,5..]
@@ -72,6 +77,12 @@ mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1]
 -- Binary conversion stuff
 power :: Integer -> Integer -> Integer
 power x y = x^y
+
+-- factorial
+fact :: Integer -> Integer
+fact 0 = 1
+fact 1 = 1
+fact x = product . enumFromTo 2 $ x
 
 --places needed
 places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
