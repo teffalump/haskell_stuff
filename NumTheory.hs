@@ -17,15 +17,9 @@ where
 
 import Data.List
 import Data.Char
+import UtilList
 
 --List minus for ordered increasing lists; [1..4] `minus` [2,3] ==> [1,4]
-minus :: Ord a => [a] -> [a] -> [a]
-minus (x:xs) (y:ys) = case (compare x y) of 
-          LT -> x : minus  xs  (y:ys)
-          EQ ->     minus  xs     ys 
-          GT ->     minus (x:xs)  ys
-minus xs _ = xs
-
 --prime sieve
 sieveTo :: Integer -> [Integer]
 sieveTo m = 2: sieve [3,5..m]
@@ -75,13 +69,13 @@ factors =  nub . map (product) . init . subsequences . primeFactors
 coPrime :: Integer -> Integer -> Bool
 coPrime x y = (==1) $ gcd x y
 
--- multiplicative order of 10 mod x
--- this only works with numbers coprime
--- with 10
+-- multiplicative order
+-- this only works with
+-- coprime numbers
 mOrd :: Integer -> Maybe Integer
-mOrd p = if coPrime 10 p
+mOrd a p = if coPrime a p
             then 
-                find ((==1) . (`mod` p) . power 10) $ [1..p-1] 
+                find ((==1) . (`mod` p) . power a) $ [1..p-1] 
             else
                 Nothing
 
