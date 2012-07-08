@@ -72,7 +72,7 @@ factors =  nub . map (product) . init . subsequences . primeFactors
 
 -- multiplicative order of 10 mod x
 mOrd :: Integer -> Maybe Integer
-mOrd p = find (\x -> if (10^x `mod` p) == 1 then True else False ) $ [1..p-1] 
+mOrd p = find ((==1) . (`mod` p) . power 10) $ [1..p-1] 
 
 -- Binary conversion stuff
 power :: Integer -> Integer -> Integer
