@@ -10,7 +10,8 @@ module NumTheory (
         primes,
         toBin,
         power,
-        fact) 
+        fact,
+        coPrime) 
 
 where 
 
@@ -70,11 +71,23 @@ primeFactors = factor primes
 factors :: Integer -> [Integer]
 factors =  nub . map (product) . init . subsequences . primeFactors
 
--- multiplicative order of 10 mod x
-mOrd :: Integer -> Maybe Integer
-mOrd p = find ((==1) . (`mod` p) . power 10) $ [1..p-1] 
+-- bool return if coprime
+coPrime :: Integer -> Integer -> Bool
+coPrime x y = (==1) $ gcd x y
 
--- Binary conversion stuff
+-- multiplicative order of 10 mod x
+-- this only works with numbers coprime
+-- with 10
+mOrd :: Integer -> Maybe Integer
+mOrd p = if coPrime 10 p
+            then 
+                find ((==1) . (`mod` p) . power 10) $ [1..p-1] 
+            else
+                Nothing
+
+
+-- a function wrapper so I can write cleaner
+-- functions using power instead of ^
 power :: Integer -> Integer -> Integer
 power x y = x^y
 
@@ -82,7 +95,7 @@ power x y = x^y
 fact :: Integer -> Integer
 fact 0 = 1
 fact 1 = 1
-fact x = product . enumFromTo 2 $ x
+fact x = product . enumFromTo 2 $ x 
 
 --places needed
 places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
