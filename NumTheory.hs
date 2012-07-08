@@ -72,7 +72,7 @@ coPrime x y = (==1) $ gcd x y
 -- multiplicative order
 -- this only works with
 -- coprime numbers
-mOrd :: Integer -> Maybe Integer
+mOrd :: Integer -> Integer -> Maybe Integer
 mOrd a p = if coPrime a p
             then 
                 find ((==1) . (`mod` p) . power a) $ [1..p-1] 
