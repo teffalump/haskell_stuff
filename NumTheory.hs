@@ -91,9 +91,6 @@ fact 0 = 1
 fact 1 = 1
 fact x = product . enumFromTo 2 $ x 
 
---places needed
-places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
-
 -- recursion, use foldl? Seems better but failed when tried
 {-test' :: Integer -> String -> [Integer] -> Integer-}
 {-test' i b [] = read b :: Integer-}
@@ -104,6 +101,9 @@ places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
 
 {-toBin' :: Integer -> Integer-}
 {-toBin' p = test' p "0" (places p)-}
+
+--places needed
+places p = reverse . takeWhile ((<=p) . power 2) $ [0..]
 
 --convert to binary from decimal
 -- foldl use
